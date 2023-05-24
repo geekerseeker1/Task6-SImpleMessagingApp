@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Messaging App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <input id="messageInput" type="text" placeholder="Type your message" />
+    <button id="sendButton">Send</button>
+    <ul id="messageList"></ul>
+
+    <script>
+      const socket = io();
+
+      $(document).ready(() => {
+        const messageInput = $('#messageInput');
+        const sendButton = $('#sendButton');
+        const messageList = $('#messageList');
+
+        sendButton.click(() => {
+          const message = messageInput.val();
+          socket.emit('chat message', message);
+          messageInput.val('');
+        });
+
+        socket.on('chat message', (msg) => {
+          messageList.append($('<li>').text(msg));
+        });
+      });
+    </script>
+  </body>
+</html>
